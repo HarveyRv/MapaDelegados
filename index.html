@@ -60,8 +60,8 @@ function ficha(f) {
   const d = DATOS[f.properties.cod];
   return '<div class="ficha"><h2>' + f.properties.nombre + '</h2><table>' +
     '<tr class="fuerte"><td>Delegados</td><td>' + fmt(d.del) + '</td></tr>' +
-    '<tr><td>Municipios más de 20K electores</td><td>' + fmt(d.r16) + '</td></tr>' +
-    '<tr><td>Municipios menos de 20K electores</td><td>' + fmt(d.r78) + '</td></tr>' +
+    '<tr><td>' + (f.properties.cod === '11' ? 'Localidades' : 'Municipios') + ' más de 20K electores</td><td>' + fmt(d.r16) + '</td></tr>' +
+    '<tr><td>' + (f.properties.cod === '11' ? 'Localidades' : 'Municipios') + ' menos de 20K electores</td><td>' + fmt(d.r78) + '</td></tr>' +
     '<tr><td>' + (f.properties.cod === '11' ? 'Localidades de Bogotá' : 'Municipios del Departamento') + '</td><td>' + fmt(d.mun) + '</td></tr>' +
     '<tr><td>Censo electoral</td><td>' + fmt(d.censo) + '</td></tr>' +
     '</table></div>';
