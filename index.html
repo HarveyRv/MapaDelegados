@@ -8,7 +8,7 @@
 <style>
   html, body { height: 100%; margin: 0; }
   body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; color: #1c2430; }
-  #map { height: 100%; background: #dfe7ee; }
+  #map { height: 100%; background: #f2f4f7; }
   .panel { background: #fff; padding: 10px 12px; border-radius: 6px; box-shadow: 0 1px 6px rgba(0,0,0,.25); font-size: 13px; line-height: 1.35; width: 250px; box-sizing: border-box; }
   .panel h1 { font-size: 15px; margin: 0 0 2px; font-weight: 600; }
   .panel .sub { color: #55606e; font-size: 12px; margin-bottom: 6px; }
@@ -50,10 +50,7 @@ const TOTAL_DELEGADOS = 4694;
 const LIMITES = [[-4.3, -79.1], [13.5, -66.8]];
 const map = L.map('map', { minZoom: 4, maxZoom: 19, zoomSnap: 0.25 }).fitBounds(LIMITES);
 L.control.scale({ metric: true, imperial: false }).addTo(map);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | Límites: DANE 2018'
-}).addTo(map);
+map.attributionControl.addAttribution('Límites departamentales: DANE 2018');
 
 function estilo(f) {
   const d = DATOS[f.properties.cod];
@@ -61,16 +58,12 @@ function estilo(f) {
 }
 function ficha(f) {
   const d = DATOS[f.properties.cod];
-  const eppd = d.censo / d.del;
   return '<div class="ficha"><h2>' + f.properties.nombre + '</h2><table>' +
     '<tr class="fuerte"><td>Delegados</td><td>' + fmt(d.del) + '</td></tr>' +
-    '<tr><td>De municipios de 20 mil o más electores</td><td>' + fmt(d.r16) + '</td></tr>' +
-    '<tr><td>De municipios de menos de 20 mil</td><td>' + fmt(d.r78) + '</td></tr>' +
-    '<tr><td>Parte de los delegados</td><td>' + pct(d.pdel) + '</td></tr>' +
-    '<tr><td>Municipios</td><td>' + fmt(d.mun) + '</td></tr>' +
+    '<tr><td>Municipios más de 20K electores</td><td>' + fmt(d.r16) + '</td></tr>' +
+    '<tr><td>Municipios menos de 20K electores</td><td>' + fmt(d.r78) + '</td></tr>' +
+    '<tr><td>' + (f.properties.cod === '11' ? 'Localidades de Bogotá' : 'Municipios del Departamento') + '</td><td>' + fmt(d.mun) + '</td></tr>' +
     '<tr><td>Censo electoral</td><td>' + fmt(d.censo) + '</td></tr>' +
-    '<tr><td>Parte del censo nacional</td><td>' + pct(d.pcenso) + '</td></tr>' +
-    '<tr><td>Electores por delegado</td><td>' + fmt(Math.round(eppd)) + '</td></tr>' +
     '</table></div>';
 }
 const capa = L.geoJSON(DEPARTAMENTOS, {
